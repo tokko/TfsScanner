@@ -5,6 +5,7 @@ import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -70,7 +71,7 @@ public class MainActivity extends AppCompatActivity implements ResultHandler{
             Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
             Ringtone r = RingtoneManager.getRingtone(getApplicationContext(), notification);
             r.play();
-        } catch (Exception e) {}
+        } catch (Exception ignored) {}
         if(result.getText().startsWith(USER_PREFIX)){
             user = result.getText().substring(USER_PREFIX.length());
         }
@@ -78,7 +79,12 @@ public class MainActivity extends AppCompatActivity implements ResultHandler{
             String id = result.getText().substring(PBI_ID_PREFIX.length());
             startService(new Intent(this, SendStatusReceiver.class).putExtra(SendStatusReceiver.EXTRA_USER, user).putExtra(SendStatusReceiver.EXTRA_PBI_ID, id));
         }
-        scannerView.startCamera();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                scannerView.startCamera();
+            }
+        }, 500);
     }
 
 }
