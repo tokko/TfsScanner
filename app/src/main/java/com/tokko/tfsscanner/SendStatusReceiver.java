@@ -26,7 +26,5 @@ public class SendStatusReceiver extends IntentService {
         Map<String, String> post = new HashMap<>();
         post.put(intent.getStringExtra(EXTRA_USER), intent.getStringExtra(EXTRA_PBI_ID));
         posts.push().setValue(post);
-        Toast.makeText(getApplicationContext(), String.format("User: %s, Id: %s", intent.getStringExtra(EXTRA_USER), intent.getStringExtra(EXTRA_PBI_ID)), Toast.LENGTH_SHORT).show();
-
     }
 }
