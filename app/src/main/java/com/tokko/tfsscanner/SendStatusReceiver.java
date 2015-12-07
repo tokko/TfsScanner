@@ -26,6 +26,32 @@ public class SendStatusReceiver extends IntentService {
         post.put(EXTRA_USER, intent.getStringExtra(EXTRA_USER));
         post.put(EXTRA_PBI_ID, intent.getStringExtra(EXTRA_PBI_ID));
 
-        posts.push().setValue(post);
+        posts.push().setValue(new Post(intent.getStringExtra(EXTRA_USER), intent.getStringExtra(EXTRA_PBI_ID)));
+    }
+
+    public class Post{
+        String User;
+        String Id;
+
+        public Post(String user, String id) {
+            User = user;
+            Id = id;
+        }
+
+        public String getUser() {
+            return User;
+        }
+
+        public void setUser(String user) {
+            User = user;
+        }
+
+        public String getId() {
+            return Id;
+        }
+
+        public void setId(String id) {
+            Id = id;
+        }
     }
 }

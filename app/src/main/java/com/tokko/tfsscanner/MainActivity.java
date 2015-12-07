@@ -18,7 +18,7 @@ import me.dm7.barcodescanner.zxing.ZXingScannerView.ResultHandler;
 public class MainActivity extends AppCompatActivity implements ResultHandler{
 
     private static final String USER_PREFIX = "user: ";
-    private static final String PBI_ID_PREFIX = "status: ";
+    private static final String PBI_ID_PREFIX = "id: ";
     private ZXingScannerView scannerView;
     private String user;
 
