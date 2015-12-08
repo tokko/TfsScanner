@@ -66,13 +66,8 @@ public class MainActivity extends AppCompatActivity implements ResultHandler{
             Ringtone r = RingtoneManager.getRingtone(getApplicationContext(), notification);
             r.play();
         } catch (Exception ignored) {}
-        if(result.getText().startsWith(USER_PREFIX)){
-            user = result.getText().substring(USER_PREFIX.length());
-        }
-        else{
-            String id = result.getText().substring(PBI_ID_PREFIX.length());
-            startService(new Intent(this, SendStatusReceiver.class).putExtra(SendStatusReceiver.EXTRA_USER, user).putExtra(SendStatusReceiver.EXTRA_PBI_ID, id));
-        }
+        String id = result.getText().substring(PBI_ID_PREFIX.length());
+        startService(new Intent(this, SendStatusReceiver.class).putExtra(SendStatusReceiver.EXTRA_USER, user).putExtra(SendStatusReceiver.EXTRA_PBI_ID, id));
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
