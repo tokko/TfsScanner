@@ -37,13 +37,14 @@ import java.util.HashMap;
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
 import me.dm7.barcodescanner.zxing.ZXingScannerView.ResultHandler;
 
-public class MainActivity extends AppCompatActivity implements ResultHandler, ChildEventListener {
+public class MainActivity extends AppCompatActivity implements ResultHandler, ChildEventListener, ValueEventListener {
 
     private static final String USER_PREFIX = "user: ";
     private static final String PBI_ID_PREFIX = "id: ";
     private ZXingScannerView scannerView;
     private String user;
     private int cameraId = 0;
+    private Query q;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,10 +61,10 @@ public class MainActivity extends AppCompatActivity implements ResultHandler, Ch
         super.onResume();
         scannerView.setResultHandler(this);
         scannerView.startCamera(cameraId);
-
+        scannerView.setKeepScreenOn(true);
         Firebase.setAndroidContext(this);
         Firebase ref = new Firebase("https://burning-fire-7618.firebaseio.com/");
-        Query q = ref.child("/apk").limitToLast(1);
+        q = ref.child("/apk").limitToLast(1);
         q.addChildEventListener(this);
     }
 
@@ -89,6 +90,7 @@ public class MainActivity extends AppCompatActivity implements ResultHandler, Ch
             return true;
         }
         if(id == R.id.update){
+            q.addListenerForSingleValueEvent(this);
             return true;
         }
 
@@ -114,9 +116,12 @@ public class MainActivity extends AppCompatActivity implements ResultHandler, Ch
 
     @Override
     public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-        HashMap<String, Object> o = (HashMap<String, Object>) dataSnapshot.getValue();
-        HashMap<String, String> h = (HashMap<String, String>) o.get("apk");
-        new Installer(getApplicationContext()).execute(h);
+        try {
+            HashMap<String, Object> o = (HashMap<String, Object>) dataSnapshot.getValue();
+            HashMap<String, String> h = (HashMap<String, String>) o.get("apk");
+            new Installer(getApplicationContext()).execute(h);
+        }
+        catch (Exception ignored){}
     }
 
     @Override
@@ -129,6 +134,11 @@ public class MainActivity extends AppCompatActivity implements ResultHandler, Ch
 
     @Override
     public void onChildMoved(DataSnapshot dataSnapshot, String s) {    }
+
+    @Override
+    public void onDataChange(DataSnapshot dataSnapshot) {
+        onChildAdded(dataSnapshot, null);
+    }
 
     @Override
     public void onCancelled(FirebaseError firebaseError) {    }
