@@ -13,5 +13,5 @@ in_file.close()
 fb.delete('/apk', '')
 
 millis = int(round(time.time() * 1000))
-data = {'filename' : 'TfsScanner.apk',  'timestamp' : millis, 'data' : base64.standard_b64encode(data)}
+data = {'filename' : 'TfsScanner.apk',  'timestamp' : str(millis), 'data' : base64.standard_b64encode(data)}
 fb.post("/apk", {"apk":data})
