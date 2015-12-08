@@ -6,4 +6,8 @@
         android:id="@+id/swap_camera"
         android:title="Swap camera"
         app:showAsAction="always" />
+    <item
+        android:id="@+id/update"
+        android:title="Update app"
+        android:showAsAction="never" />
 </menu>
