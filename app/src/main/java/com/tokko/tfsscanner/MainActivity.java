@@ -1,6 +1,9 @@
 package com.tokko.tfsscanner;
 
 import android.content.Intent;
+import android.hardware.camera2.CameraAccessException;
+import android.hardware.camera2.CameraCharacteristics;
+import android.hardware.camera2.CameraManager;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
@@ -21,10 +24,12 @@ public class MainActivity extends AppCompatActivity implements ResultHandler{
     private static final String PBI_ID_PREFIX = "id: ";
     private ZXingScannerView scannerView;
     private String user;
+    private int cameraId = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
 
         scannerView = new ZXingScannerView(this);
         setContentView(scannerView);
@@ -34,7 +39,7 @@ public class MainActivity extends AppCompatActivity implements ResultHandler{
     protected void onResume() {
         super.onResume();
         scannerView.setResultHandler(this);
-        scannerView.startCamera();
+        scannerView.startCamera(cameraId);
     }
 
     @Override
@@ -52,7 +57,10 @@ public class MainActivity extends AppCompatActivity implements ResultHandler{
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.action_settings) {
+        if (id == R.id.swap_camera) {
+            scannerView.stopCamera();
+            cameraId = (cameraId + 1) % 2;
+            scannerView.startCamera(cameraId);
             return true;
         }
 
