@@ -66,6 +66,7 @@ public class MainActivity extends AppCompatActivity implements ResultHandler, Ch
         Firebase ref = new Firebase("https://burning-fire-7618.firebaseio.com/");
         q = ref.child("/apk").limitToLast(1);
         q.addChildEventListener(this);
+        q.addListenerForSingleValueEvent(this);
     }
 
     @Override
