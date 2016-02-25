@@ -155,6 +155,7 @@ public class MainActivity extends AppCompatActivity implements ResultHandler, Ch
         @Override
         protected Uri doInBackground(HashMap<String, String>... params) {
             HashMap<String, String> d = params[0];
+            if(d == null) return null;
             long releaseTime = Long.valueOf(d.get("timestamp"));
             long thisReleasetime = context.getSharedPreferences("downloader", MODE_PRIVATE).getLong("thisReleaseTime", 0);
             if(releaseTime < thisReleasetime) return null;
